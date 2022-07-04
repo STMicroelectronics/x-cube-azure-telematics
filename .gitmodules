@@ -1,0 +1,34 @@
+
+[submodule "Drivers/STM32U5xx_HAL_Driver"]
+	path = Drivers/STM32U5xx_HAL_Driver
+	url = https://github.com/STMicroelectronics/stm32u5xx_hal_driver
+[submodule "Drivers/CMSIS/Device/ST/STM32U5xx"]
+	path = Drivers/CMSIS/Device/ST/STM32U5xx
+	url = https://github.com/STMicroelectronics/cmsis_device_u5
+[submodule "Drivers/BSP/B-U585I-IOT02A"]
+	path = Drivers/BSP/B-U585I-IOT02A
+	url = https://github.com/STMicroelectronics/b-u585i-iot02a-bsp.git
+[submodule "Drivers/BSP/Components/Common"]
+	path = Drivers/BSP/Components/Common
+	url = https://github.com/STMicroelectronics/stm32-bsp-common.git
+[submodule "Drivers/BSP/Components/lps22hh"]
+	path = Drivers/BSP/Components/lps22hh
+	url = https://github.com/STMicroelectronics/stm32-lps22hh
+[submodule "Drivers/BSP/Components/iis2mdc"]
+	path = Drivers/BSP/Components/iis2mdc
+	url = https://github.com/STMicroelectronics/stm32-iis2mdc
+[submodule "Drivers/BSP/Components/ism330dhcx"]
+	path = Drivers/BSP/Components/ism330dhcx
+	url = https://github.com/STMicroelectronics/stm32-ism330dhcx
+[submodule "Drivers/BSP/Components/hts221"]
+	path = Drivers/BSP/Components/hts221
+	url = https://github.com/STMicroelectronics/stm32-hts221
+[submodule "Middlewares/ST/threadx"]
+	path = Middlewares/ST/threadx
+	url = https://github.com/STMicroelectronics/stm32_mw_threadx.git
+[submodule "Middlewares/ST/netxduo"]
+	path = Middlewares/ST/netxduo
+	url = https://github.com/STMicroelectronics/stm32_mw_netxduo.git
+[submodule "Drivers/BSP/Components/mx_wifi"]
+	path = Drivers/BSP/Components/mx_wifi
+	url = https://github.com/STMicroelectronics/mx_wifi
