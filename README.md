@@ -9,7 +9,7 @@ __Note:__ Please refer to [X-CUBE-AZURE v2 package](https://www.st.com/en/embedd
 
 Available applications:
 - B-U585I-IOT02A:
-  - Nx_Azure_IoT: [user documentation](Projects\B-U585I-IOT02A\Applications\NetXDuo\Nx_Azure_IoT\README.md)
+  - Nx_Azure_IoT: [user documentation](Projects/B-U585I-IOT02A/Applications/NetXDuo/Nx_Azure_IoT/README.md)
 
 ## __How to use it?__
 
@@ -33,6 +33,6 @@ RTOS, Network, ThreadX, NetXDuo, Azure IoT, MQTT, DNS, TLS, WIFI, MXCHIP
 
 ## __Release note__
 
-Details about the content of this release are available in the release note [here]([URL](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/x-cube-azure-telematics/blob/main/Release_Notes.html)).  
+Details about the content of this release are available in the release note [here](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/x-cube-azure-telematics/blob/main/Release_Notes.html).  
 
 
