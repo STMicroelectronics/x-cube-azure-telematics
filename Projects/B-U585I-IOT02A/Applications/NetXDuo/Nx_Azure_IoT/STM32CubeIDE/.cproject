@@ -103,7 +103,7 @@
 									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Cellular/Misc/Cmd/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/netxduo/common/drivers/cellular"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/mx_wifi"/>
-									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/netxduo_driver_wifi/mxchip"/>
+									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/netxduo_drivers/wifi/mxchip"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1708486039" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
