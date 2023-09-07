@@ -32,3 +32,19 @@
 [submodule "Drivers/BSP/Components/mx_wifi"]
 	path = Drivers/BSP/Components/mx_wifi
 	url = https://github.com/STMicroelectronics/mx_wifi
+[submodule "Middlewares/ST/STM32_Cellular"]
+	path = Middlewares/ST/STM32_Cellular
+	url = https://github.com/STMicroelectronics/stm32-cellular-mw.git
+[submodule "Middlewares/ST/cmsis_rtos_threadx"]
+	path = Middlewares/ST/cmsis_rtos_threadx
+	url = https://github.com/STMicroelectronics/stm32_mw_cmsis_rtos_tx.git
+[submodule "Drivers/BSP/Components/cellular/BG96"]
+	path = Drivers/BSP/Components/cellular/BG96
+	url = https://github.com/STMicroelectronics/stm32-cellular-bg96.git
+[submodule "Drivers/BSP/Components/cellular/TYPE1SC"]
+	path = Drivers/BSP/Components/cellular/TYPE1SC
+	url = https://github.com/STMicroelectronics/stm32-cellular-t1sc.git
+[submodule "Drivers/CMSIS/Core"]
+	path = Drivers/CMSIS/Core
+	url = https://github.com/STMicroelectronics/cmsis_core.git
+
