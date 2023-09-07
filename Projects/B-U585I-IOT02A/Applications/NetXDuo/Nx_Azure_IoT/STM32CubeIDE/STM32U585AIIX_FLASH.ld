@@ -155,6 +155,14 @@ SECTIONS
     . = ALIGN(8);
   } >RAM
 
+  ._threadx_heap :
+  {
+    . = ALIGN(8);
+    __RAM_segment_used_end__ = .;
+    . = . + 64K;
+    . = ALIGN(8);
+  } >RAM AT> RAM
+
   /* Remove information from the compiler libraries */
   /DISCARD/ :
   {

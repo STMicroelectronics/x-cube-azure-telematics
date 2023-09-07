@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    system_stm32u5xx.c
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   CMSIS Cortex-M33 Device Peripheral Access Layer System Source File
   *
   *   This file provides two functions and one global variable to be called from

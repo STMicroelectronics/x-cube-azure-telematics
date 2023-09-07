@@ -229,7 +229,11 @@
           <state>TX_SINGLE_MODE_NON_SECURE=1</state>
           <state>USE_HAL_DRIVER</state>
           <state>STM32U585xx</state>
-          <state></state>
+          <state>APPLICATION_CONFIG_FILE="app_azure_iot_config.h"</state>
+          <state>USE_WIFI=1</state>
+          <state>USE_DYNAMIC_MEMORY_ALLOCATION</state>
+          <state>RTOS2_BYTE_POOL_STACK_SIZE=(16*1024)</state>
+          <state>RTOS2_BYTE_POOL_HEAP_SIZE=(4*1024)</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -387,6 +391,23 @@
           <state>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/addons/azure_iot/azure_iot_security_module/iot-security-module-core/deps/flatcc/src/runtime</state>
           <state>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/addons/azure_iot/azure_iot_security_module/iot-security-module-core/deps/flatcc/include</state>
           <state>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/addons/azure_iot/samples/cert</state>
+          <state>$PROJ_DIR$/../STM32_Cellular/Config</state>
+          <state>$PROJ_DIR$/../STM32_Cellular/Target</state>
+          <state>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Drivers/CMSIS/RTOS2/Template</state>
+          <state>$PROJ_DIR$/../../../../../../Drivers/CMSIS/RTOS2/Include</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/AT_Core/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Cellular_Service/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Data_Cache/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Error/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Ipc/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Runtime_Library/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Rtosal/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Core/Trace/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Interface/Cellular_Ctrl/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Interface/Com/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/STM32_Cellular/Misc/Cmd/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/drivers/cellular</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -565,6 +586,7 @@
         <option>
           <name>ADefines</name>
           <state>TX_SINGLE_MODE_NON_SECURE=1</state>
+          <state>USE_DYNAMIC_MEMORY_ALLOCATION=1</state>
         </option>
         <option>
           <name>AList</name>
@@ -1101,6 +1123,48 @@
   <group>
     <name>Application</name>
     <group>
+      <name>Cellular</name>
+      <group>
+        <name>Config</name>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_cellular_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_features.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_hw_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_ipc_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_power_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_rtosal_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_sw_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Config/plf_thread_config.h</name>
+          </file>
+      </group>
+      <group>
+        <name>Target</name>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Target/board_interrupts.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$/../STM32_Cellular/Target/board_setup.c</name>
+        </file>
+      </group>
+    </group>
+    <group>
       <name>EWARM</name>
       <file>
         <name>$PROJ_DIR$/startup_stm32u585xx.s</name>
@@ -1228,6 +1292,60 @@
           <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lps22hh/lps22hh_reg.c</name>
         </file>
         <group>
+          <name>cellular</name>
+          <group>
+            <name>BG96</name>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Src/at_custom_modem_api.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Src/at_custom_modem_sid.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Src/at_custom_modem_signalling.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Src/at_custom_modem_socket.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Src/at_custom_modem_specific.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Src/at_custom_sysctrl.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/BG96/Inc/plf_modem_config.h</name>
+            </file>
+          </group>
+          <group>
+            <name>TYPE1SC</name>
+			<excluded>
+                 <configuration>Nx_Azure_IoT</configuration>
+            </excluded>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Src/at_custom_modem_api.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Src/at_custom_modem_sid.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Src/at_custom_modem_signalling.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Src/at_custom_modem_socket.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Src/at_custom_modem_specific.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Src/at_custom_sysctrl.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Inc/plf_modem_config.h</name>
+            </file>
+          </group>
+        </group>
+        <group>
           <name>mx_wifi</name>
           <file>
             <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/mx_wifi/mx_wifi.c</name>
@@ -1334,6 +1452,174 @@
   </group>
   <group>
     <name>Middlewares</name>
+    <group>
+      <name>Cellular</name>
+      <group>
+          <name>Core</name>
+          <group>
+              <name>AT_Core</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_core.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_datapack.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_modem_api.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_modem_common.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_modem_socket.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_parser.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_signalling_analyze.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_signalling_build.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_sysctrl.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\AT_Core\Src\at_util.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Cellular_Service</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_cmd.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_config.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_datacache.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_int.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_os.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_power.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_socket.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_task.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Cellular_Service\Src\cellular_service_utils.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Data_Cache</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Data_Cache\Src\dc_common.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Error</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Error\Src\error_handler.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Ipc</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Ipc\Src\ipc_common.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Ipc\Src\ipc_rxfifo.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Ipc\Src\ipc_uart.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Rtosal</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Rtosal\Src\rtosal.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Runtime_Library</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Runtime_Library\Src\cellular_runtime_custom.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Runtime_Library\Src\cellular_runtime_standard.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Trace</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Core\Trace\Src\trace_interface.c</name>
+              </file>
+          </group>
+      </group>
+      <group>
+          <name>Interface</name>
+          <group>
+              <name>Com</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_core.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_icc.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_sockets.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_sockets_err_compat.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_sockets_ip_modem.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_sockets_lwip_mcu.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_sockets_statistic.c</name>
+              </file>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Com\Src\com_utils.c</name>
+              </file>
+          </group>
+          <group>
+              <name>Control</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Interface\Cellular_Ctrl\Src\cellular_control_api.c</name>
+              </file>
+          </group>
+      </group>
+      <group>
+          <name>Misc</name>
+          <group>
+              <name>Cmd</name>
+              <file>
+                  <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\STM32_Cellular\Misc\Cmd\Src\cmd.c</name>
+              </file>
+          </group>
+      </group>
+    </group>
+    <group>
+      <name>cmsis_rtos_threadx</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\..\..\..\Middlewares\ST\cmsis_rtos_threadx\cmsis_os2.c</name>
+      </file>
+    </group>
     <group>
       <name>NetXDuo</name>
       <group>
@@ -1913,6 +2199,15 @@
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_disconnect_complete_notify.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_establish.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_packet_receive.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_udp_socket_driver_packet_receive.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_establish_notify.c</name>
@@ -2902,9 +3197,6 @@
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_methods.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_module_start.c</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_null_cipher.c</name>
         </file>
         <file>
@@ -3106,7 +3398,34 @@
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_dtls_verify_mac.c</name>
         </file>
         <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_generate_client_key_exchange.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_generate_master_secret.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_generate_premaster_secret.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_generate_server_key_exchange.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_generate_session_keys.c</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_module_hash_compute.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_process_client_key_exchange.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_process_server_key_exchange.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_remote_certificate_verify.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_session_keys_set.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_tls_1_3_client_handshake.c</name>
@@ -3397,6 +3716,9 @@
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_tls_session_packet_buffer_set.c</name>
         </file>
         <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_tls_session_packet_pool_set.c</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_tls_session_protocol_version_override.c</name>
         </file>
         <file>
@@ -3446,6 +3768,12 @@
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_tls_verify_mac.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_trusted_certificate_add.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_verify_mac.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_x509.c</name>
@@ -3716,6 +4044,9 @@
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nxe_secure_tls_session_packet_buffer_set.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nxe_secure_tls_session_packet_pool_set.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nxe_secure_tls_session_protocol_version_override.c</name>
@@ -4486,9 +4817,21 @@
       <group>
         <name>Network</name>
         <group>
+        <name>cellular</name>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/drivers/cellular/nx_driver_stm32_cellular.c</name>
+          <excluded>
+            <configuration>Nx_Azure_IoT</configuration>
+          </excluded>
+        </file>
+        </group>
+        <group>
           <name>wifi</name>
           <file>
             <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/drivers/wifi/mxchip/nx_driver_emw3080.c</name>
+            <excluded>
+              <configuration>Nx_Azure_IoT</configuration>
+            </excluded>
           </file>
           <file>
             <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/drivers/wifi/mxchip/mx_wifi_azure_rtos.c</name>

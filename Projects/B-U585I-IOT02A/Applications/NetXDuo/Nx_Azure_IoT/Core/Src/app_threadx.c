@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    app_threadx.c
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   ThreadX applicative file
   ******************************************************************************
   * @attention
@@ -23,6 +23,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#if (USE_CELLULAR == 1)
+#include "cmsis_os.h"
+#endif /* USE_CELLULAR == 1 */
 
 /* USER CODE END Includes */
 
@@ -59,12 +62,8 @@
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
   UINT ret = TX_SUCCESS;
-  TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
-
-   /* USER CODE BEGIN App_ThreadX_MEM_POOL */
-  (void)byte_pool;
+  /* USER CODE BEGIN App_ThreadX_MEM_POOL */
   /* USER CODE END App_ThreadX_MEM_POOL */
-
   /* USER CODE BEGIN App_ThreadX_Init */
   /* USER CODE END App_ThreadX_Init */
 
@@ -79,12 +78,18 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 void MX_ThreadX_Init(void)
 {
   /* USER CODE BEGIN  Before_Kernel_Start */
+#if (USE_CELLULAR == 1)
+  osKernelInitialize();
+  osKernelStart();
+#endif /* USE_CELLULAR == 1 */
 
+#if (USE_WIFI == 1)
   /* USER CODE END  Before_Kernel_Start */
 
   tx_kernel_enter();
 
   /* USER CODE BEGIN  Kernel_Start_Error */
+#endif /* USE_WIFI == 1 */
 
   /* USER CODE END  Kernel_Start_Error */
 }

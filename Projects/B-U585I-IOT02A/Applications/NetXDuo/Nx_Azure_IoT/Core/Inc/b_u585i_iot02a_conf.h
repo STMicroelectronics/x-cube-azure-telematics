@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    b_u585i_iot02a_conf_template.h
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   configuration file.
   *          This file should be copied to the application folder and renamed
   *          to b_u585i_iot02a_conf.h

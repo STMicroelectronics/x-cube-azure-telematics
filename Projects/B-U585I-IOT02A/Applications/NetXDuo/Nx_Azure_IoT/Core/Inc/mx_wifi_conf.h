@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    mx_wifi_conf.h
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   Header for mx_wifi module
   ******************************************************************************
   * @attention

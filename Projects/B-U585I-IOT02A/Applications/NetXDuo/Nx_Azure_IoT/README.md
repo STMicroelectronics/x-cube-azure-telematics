@@ -130,7 +130,12 @@ RTOS, Network, ThreadX, NetXDuo, Azure IoT, MQTT, DNS, TLS, WIFI, MXCHIP
 
 ### Hardware and Software environment
 
-  - This example runs on STM32U585xx devices with a WiFi module (MXCHIP:EMW3080) with this configuration :
+  - This example runs on B-U585I-IOT02A board with STM32U585xx chip with either WiFi or cellular modem.
+  
+  - To use B-U585I-IOT02A on-board WiFi module (MXCHIP:EMW3080) the C pre-processor define USE_WIFI must be defined
+    in IDE project configuration with value 1 (USE_WIFI=1). USE_CELLULAR=1 must not be defined.
+    
+    The WiFi module is used with following configuration:
 
     + MXCHIP Firmware 2.1.11
 
@@ -138,11 +143,49 @@ RTOS, Network, ThreadX, NetXDuo, Azure IoT, MQTT, DNS, TLS, WIFI, MXCHIP
 
     + Bypass mode (TCP-IP stack is handled by NetXDuo, not by Wi-Fi module)
 
-    The EMW3080B MXCHIP Wi-Fi module firmware and how to update the board with it are available at <https://www.st.com/en/development-tools/x-wifi-emw3080b.html>
-
-    Before using this project, the B-U585I-IOT02A board must be updated with the EMW3080B firmware version 2.1.11.
+    If the EMW3080B MXCHIP Wi-Fi module firmware is not the required version 2.1.1, an update package is available at <https://www.st.com/en/development-tools/x-wifi-emw3080b.html>
 
     To achieve this, follow the instructions given at the above link, using the EMW3080updateV2.1.11RevC.bin flasher under the V2.1.11/SPI folder.
+
+  - To use B-U585I-IOT02A with cellular modem, the C pre-processor define USE_CELLULAR=1 must be defined in IDE project configuration. USE_WIFI=1 must be removed.  (USE_WIFI=1 and USE_CELLULAR=1 are mutually exclusive. They must not be defined at same time.)  
+
+    **EWARM:**  
+    Right click on the project's name: **Nx_Azure_IoT** -> **Options** -> **C/C++ Compiler**  
+    In section **Defined symbols**  
+    replace **USE_WIFI=1** by **USE_CELLULAR=1**  
+
+    **STM32CubeIDE:**  
+    Right click on the project's name: **Nx_Azure_IoT** -> **Project properties** -> **C/C++ Build** -> **Settings** -> **MCU GCC Compiler**  
+    In section **Preprocessor**  
+    replace **USE_WIFI=1** by **USE_CELLULAR=1**  
+
+    The supported cellular modems are the Quectel BG96 on ST MB1329 extension board and the EVK-TYPE1SC extension board with Murata chip.
+    
+    They connect to STMOD+2 connector CN2 on B-U585I-IOT02A board.
+    
+    When building with the USE_CELLULAR flag, the default modem is the BG96. To choose the TYPE1SC modem, please replace the BG96 driver's source and include files by the TYPE1SC driver's one.
+
+    **EWARM:**  
+    In the project source tree:  
+    right click on **Drivers/BSP/Components/cellular/BG96** -> **Options** -> Check **Exclude from build**  
+    right click on **Drivers/BSP/Components/cellular/TYPE1SC** -> **Options** -> Uncheck **Exclude from build**  
+
+    Right click on the project's name **Nx_Azure_IoT** -> **Options** -> **C/C++ Compiler**  
+    In section **Additional include directories**  
+    replace **\$PROJ_DIR\$/../../../../../../Drivers/BSP/Components/cellular/BG96/Inc**  
+    by **\$PROJ_DIR\$/../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Inc**  
+
+
+    **STM32CubeIDE:**  
+    Right click on the project's name -> **Nx_Azure_IoT** -> **Project properties** -> **C/C++ Build** -> **Settings** -> **MCU GCC Compiler**  
+    In section **Include Path**  
+    replace **../../../../../../../Drivers/BSP/Components/cellular/BG96/Inc**  
+    by **../../../../../../../Drivers/BSP/Components/cellular/TYPE1SC/Inc**
+
+    In the project source tree:  
+    right click on **Drivers/BSP/Components/cellular/BG96** -> **Properties** -> Check **Exclude resource from build**  
+    right click on **Drivers/BSP/Components/cellular/TYPE1SC** -> **Properties** -> Uncheck **Exclude resource from build**  
+
 
   - This application has been tested with B-U585I-IOT02A (MB1551-U585AI) boards Revision: RevC and can be adapted to other supported device and development board.
 
@@ -166,15 +209,21 @@ To run the application :
    
    Example: in a DOS command prompt:
    
-       subst X: C:\STM32CubeExpansion_Cloud_AZURE_V2.0.0
+       subst X: C:\STM32CubeExpansion_Cloud_AZURE_V2.1.0
    
    then use project file from `X:` drive
 
- - Open the application project file for your preferred development environment. (ex: EWARM/Project.eww)
+ - Open the application project file in development environment. (ex: EWARM/Project.eww)
 
+ - In project configuration, in C pre-processor defines:
+   - If using WiFi connection, USE_WIFI=1 must be defined. USE_CELLULAR=1 must be removed.
+   - If using cellular modem, USE_CELLULAR=1 must be defined. USE_WIFI=1 must be removed.
+   
  - Edit the file <code>NetXDuo/App/app_azure_iot_config.h</code>:
 
-    - configure the WiFi Settings (WIFI_SSID, WIFI_PASSWORD)
+    - If using WiFi, configure the WiFi Settings (WIFI_SSID, WIFI_PASSWORD)
+
+    - If using cellular modem, the network connectivity settings are detected in the SIM card inserted in the modem board SIM slot.
 
     - Azure IoT configuration:
 

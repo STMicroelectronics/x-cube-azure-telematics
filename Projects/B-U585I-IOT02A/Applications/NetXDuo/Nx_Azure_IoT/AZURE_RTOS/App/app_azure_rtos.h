@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    app_azure_rtos.h
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   app_azure_rtos application header file
   ******************************************************************************
   * @attention

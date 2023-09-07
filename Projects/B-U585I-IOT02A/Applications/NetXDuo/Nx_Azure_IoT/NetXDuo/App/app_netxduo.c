@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    app_netxduo.c
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   NetXDuo applicative file
   ******************************************************************************
   * @attention
@@ -27,18 +27,34 @@
 #include "nx_ip.h"
 #include "nxd_sntp_client.h"
 #include "app_azure_iot.h"
+
+#if (USE_CELLULAR == 1)
+#include "nx_driver_stm32_cellular.c"
+#endif /* USE_CELLULAR == 1 */
+#if (USE_WIFI == 1)
+#include "nx_driver_emw3080.c"
+#endif /* USE_WIFI == 1 */
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+#if (USE_CELLULAR == 1)
+#define DHCP_DISABLE
+#define ARP_DISABLE
+#endif /* USE_CELLULAR == 1 */
+
 TX_THREAD AppMainThread;
 TX_THREAD AppAzureIotThread;
 
-TX_SEMAPHORE DhcpSemaphore;
+TX_SEMAPHORE IpAddrSemaphore; /* release when an IpAddr is obtained */
 
 NX_PACKET_POOL        AppPool;
 NX_IP                 IpInstance;
+#ifndef DHCP_DISABLE
 NX_DHCP               DhcpClient;
+#endif /* DHCP_DISABLE */
 static NX_DNS         DnsClient;
 static NX_SNTP_CLIENT SntpClient;
 
@@ -64,7 +80,19 @@ ULONG   NetMask;
 #define SNTP_UPDATE_MAX          (uint32_t)10
 #define SNTP_UPDATE_INTERVAL     (NX_IP_PERIODIC_RATE / 2)
 
-#define DHCP_TIMEOUT             30*NX_IP_PERIODIC_RATE
+#define IP_ADDR_TIMEOUT          (50*NX_IP_PERIODIC_RATE)
+
+#define SAMPLE_IP_THREAD_PRIORITY     DEFAULT_PRIORITY
+#define SAMPLE_IP_THREAD_STACK_SIZE   (2 * DEFAULT_MEMORY_SIZE)
+
+#if (USE_CELLULAR == 1)
+#define SAMPLE_NETWORK_CONFIGURE_START          nx_driver_stm32_cellular_configure
+#define SAMPLE_NETWORK_DRIVER                   nx_driver_stm32_cellular
+#endif /* USE_CELLULAR == 1 */
+
+#if (USE_WIFI == 1)
+#define SAMPLE_NETWORK_DRIVER                   nx_driver_emw3080_entry
+#endif /* USE_WIFI == 1 */
 
 /* USER CODE END PD */
 
@@ -89,7 +117,17 @@ static const char *sntp_servers[] =
 static UINT sntp_server_index;
 
 static ULONG dns_server_address[3];
+#ifndef DHCP_DISABLE
+#ifndef USER_DNS_ADDRESS
 static UINT  dns_server_address_size = sizeof(dns_server_address);
+#endif /* USER_DNS_ADDRESS */
+#else
+void SAMPLE_NETWORK_CONFIGURE_START(NX_IP *ip_ptr, ULONG *dns_address);
+#endif /* DHCP_DISABLE */
+
+/* Include the platform IP driver. */
+void SAMPLE_NETWORK_DRIVER(struct NX_IP_DRIVER_STRUCT *driver_req);
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,6 +141,7 @@ static UINT sntp_time_sync_internal(ULONG sntp_server_address);
 static UINT sntp_time_sync(VOID);
 
 /* USER CODE END PFP */
+
 /**
   * @brief  Application NetXDuo Initialization.
   * @param memory_ptr: memory pointer
@@ -116,6 +155,9 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
    /* USER CODE BEGIN App_NetXDuo_MEM_POOL */
 
   /* USER CODE END App_NetXDuo_MEM_POOL */
+  /* USER CODE BEGIN 0 */
+
+  /* USER CODE END 0 */
 
   /* USER CODE BEGIN MX_NetXDuo_Init */
 #if (USE_STATIC_ALLOCATION == 1)
@@ -140,7 +182,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   }
   
   /* Allocate the memory for Ip_Instance */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, 2 * DEFAULT_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, SAMPLE_IP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     printf("tx_byte_allocate (Ip_Instance) fail\r\n");
     return TX_POOL_ERROR;
@@ -149,15 +191,16 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   printf("Create IP instance...\r\n");
   
   /* Create the main NX_IP instance */
-  ret = nx_ip_create(&IpInstance, "Main Ip instance", NULL_ADDRESS, NULL_ADDRESS, &AppPool, nx_driver_emw3080_entry,
-                     pointer, 2 * DEFAULT_MEMORY_SIZE, DEFAULT_PRIORITY);
-  
+  ret = nx_ip_create(&IpInstance, "Main Ip instance", NULL_ADDRESS, NULL_ADDRESS, &AppPool, SAMPLE_NETWORK_DRIVER,
+                     pointer, SAMPLE_IP_THREAD_STACK_SIZE, SAMPLE_IP_THREAD_PRIORITY);
+
   if (ret != NX_SUCCESS)
   {
     printf("nx_ip_create fail: %u\r\n", ret);
     return NX_NOT_ENABLED;
   }
   
+#ifndef DHCP_DISABLE
   /* create the DHCP client */
   ret = nx_dhcp_create(&DhcpClient, &IpInstance, "DHCP Client");
   
@@ -166,7 +209,9 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     printf("nx_dhcp_create fail: %u\r\n", ret);
     return NX_NOT_ENABLED;
   }
+#endif /* DHCP_DISABLE */
   
+#ifndef ARP_DISABLE
   /* Allocate the memory for ARP */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, ARP_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
@@ -182,6 +227,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     printf("nx_arp_enable fail: %u\r\n", ret);
     return NX_NOT_ENABLED;
   }
+#endif /* ARP_DISABLE */
   
   /* Enable the ICMP */
   ret = nx_icmp_enable(&IpInstance);
@@ -247,8 +293,8 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     return NX_NOT_ENABLED;
   }
   
-  /* set DHCP notification callback  */
-  tx_semaphore_create(&DhcpSemaphore, "DHCP Semaphore", 0);
+  /* set IpAddr notification callback  */
+  tx_semaphore_create(&IpAddrSemaphore, "IpAddr Semaphore", 0);
 #endif 
   /* USER CODE END MX_NetXDuo_Init */
 
@@ -265,7 +311,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
 static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 {
   /* release the semaphore as soon as an IP address is available */
-  tx_semaphore_put(&DhcpSemaphore);
+  tx_semaphore_put(&IpAddrSemaphore);
 }
 
 /**
@@ -286,6 +332,7 @@ static VOID App_Main_Thread_Entry(ULONG thread_input)
     Error_Handler();
   }
   
+#ifndef DHCP_DISABLE
   /* start DHCP client */
   ret = nx_dhcp_start(&DhcpClient);
   if (ret != NX_SUCCESS)
@@ -293,12 +340,14 @@ static VOID App_Main_Thread_Entry(ULONG thread_input)
     printf("nx_dhcp_start fail: %u\r\n", ret);
     Error_Handler();
   }
-  
+#else
+  SAMPLE_NETWORK_CONFIGURE_START(&IpInstance, &dns_server_address[0]);
+#endif /* DHCP_DISABLE */
+
   /* wait until an IP address is ready */
-  if(tx_semaphore_get(&DhcpSemaphore, DHCP_TIMEOUT) != TX_SUCCESS)
+  while(tx_semaphore_get(&IpAddrSemaphore, IP_ADDR_TIMEOUT) != TX_SUCCESS)
   {
-    printf("nx_dhcp timeout fail\r\n");
-    Error_Handler();
+    printf("IpAddrSemaphore timeout fail - retrying...\r\n");
   }
   
   ret = nx_ip_address_get(&IpInstance, &IpAddress, &NetMask);
@@ -311,19 +360,19 @@ static VOID App_Main_Thread_Entry(ULONG thread_input)
   
   PRINT_IP_ADDRESS("STM32 IP Address: ", IpAddress);
 
+#ifndef DHCP_DISABLE
 #ifndef USER_DNS_ADDRESS
   /* Retrieve DNS server address from DHCP answer */
   nx_dhcp_interface_user_option_retrieve(&DhcpClient, 0, NX_DHCP_OPTION_DNS_SVR, (UCHAR *)(dns_server_address),
                                            &dns_server_address_size);
 #endif
+#endif /* DHCP_DISABLE */
 
   /* start the Azure IoT application thread */
   tx_thread_resume(&AppAzureIotThread);
   
   /* this thread is not needed any more, we relinquish it */
   tx_thread_relinquish();
-  
-  return;  
 }
 
 /**
@@ -342,10 +391,23 @@ UINT dns_create(NX_DNS *dns_ptr)
     printf("nx_dns_create fail: %u\r\n", ret);
     Error_Handler();
   }
+  /* Is the DNS client configured for the host application to create the packet pool?  */
+#ifdef NX_DNS_CLIENT_USER_CREATE_PACKET_POOL
+  if (ret == NX_SUCCESS)
+  {
+    /* Yes, use the packet pool created above which has appropriate payload size
+       for DNS messages.  */
+    ret = nx_dns_packet_pool_set(dns_ptr, IpInstance.nx_ip_default_packet_pool);
+    if (ret != NX_SUCCESS)
+    {
+      nx_dns_delete(dns_ptr);
+    }
+  }
+#endif /* NX_DNS_CLIENT_USER_CREATE_PACKET_POOL */
 
 #ifdef USER_DNS_ADDRESS
   dns_server_address[0] = USER_DNS_ADDRESS;
-#endif
+#endif /* USER_DNS_ADDRESS */
 
   /* Initialize DNS instance with a DNS server address */
   ret = nx_dns_server_add(dns_ptr, dns_server_address[0]);
@@ -517,36 +579,35 @@ static UINT sntp_time_sync(VOID)
 {
   UINT status;
   ULONG sntp_server_address[3];
+
 #ifndef DHCP_DISABLE
   UINT  sntp_server_address_size = sizeof(sntp_server_address);
-#endif
 
-#ifndef DHCP_DISABLE
-    /* if DHCP server returned an NTP server address then try to sync the time with it */
-    status = nx_dhcp_interface_user_option_retrieve(&DhcpClient, 0, NX_DHCP_OPTION_NTP_SVR, (UCHAR *)(sntp_server_address),
+  /* if DHCP server returned an NTP server address then try to sync the time with it */
+  status = nx_dhcp_interface_user_option_retrieve(&DhcpClient, 0, NX_DHCP_OPTION_NTP_SVR, (UCHAR *)(sntp_server_address),
                                                     &sntp_server_address_size);
 
-    /* Check status.  */
-    if (status == NX_SUCCESS)
+  /* Check status. */
+  if (status == NX_SUCCESS)
+  {
+    for (UINT i = 0; (i * 4) < sntp_server_address_size; i++)
     {
-        for (UINT i = 0; (i * 4) < sntp_server_address_size; i++)
-        {
-          printf("SNTP Time Sync... %lu.%lu.%lu.%lu (from DHCP)\r\n", 
-                   (sntp_server_address[i] >> 24),
-                   (sntp_server_address[i] >> 16 & 0xFF),
-                   (sntp_server_address[i] >> 8 & 0xFF),
-                   (sntp_server_address[i] & 0xFF));
+      printf("SNTP Time Sync... %lu.%lu.%lu.%lu (from DHCP)\r\n", 
+               (sntp_server_address[i] >> 24),
+               (sntp_server_address[i] >> 16 & 0xFF),
+               (sntp_server_address[i] >> 8 & 0xFF),
+               (sntp_server_address[i] & 0xFF));
 
-            /* Start SNTP to sync the local time.  */
-            status = sntp_time_sync_internal(sntp_server_address[i]);
+      /* Start SNTP to sync the local time.  */
+      status = sntp_time_sync_internal(sntp_server_address[i]);
 
-            /* Check status.  */
-            if(status == NX_SUCCESS)
-            {
-                return(NX_SUCCESS);
-            }
-        }
+      /* Check status. */
+      if(status == NX_SUCCESS)
+      {
+          return(NX_SUCCESS);
+      }
     }
+  }
 #endif /* DHCP_DISABLE */
 
   /* If no NTP server address obtained with DHCP then try with official list */
@@ -554,9 +615,17 @@ static UINT sntp_time_sync(VOID)
   {
     printf("SNTP Time Sync... %s\r\n", sntp_servers[sntp_server_index]);
 
-    /* Look up SNTP Server address. */
-    status = nx_dns_host_by_name_get(&DnsClient, (UCHAR *)sntp_servers[sntp_server_index], &sntp_server_address[0],
-                                     5 * NX_IP_PERIODIC_RATE);
+#if (USE_CELLULAR == 1)
+    /* Make sure the link is up. */
+    ULONG link_status;
+    status = nx_ip_interface_status_check(&IpInstance, 0U, NX_IP_LINK_ENABLED, &link_status, NX_WAIT_FOREVER);
+    if (status == NX_SUCCESS)
+#endif /* USE_CELLULAR == 1 */
+    {
+      /* Look up SNTP Server address. */
+      status = nx_dns_host_by_name_get(&DnsClient, (UCHAR *)sntp_servers[sntp_server_index], &sntp_server_address[0],
+                                       5 * NX_IP_PERIODIC_RATE);
+    }
 
     /* Check status.  */
     if (status == NX_SUCCESS)

@@ -1094,7 +1094,10 @@ UINT std_component_telemetry_send(STD_COMPONENT *handle, NX_AZURE_IOT_HUB_CLIENT
     }
   }
 
-  nx_azure_iot_hub_client_telemetry_message_delete(packet_ptr);
+  if (status != NX_AZURE_IOT_SUCCESS)
+  {
+    nx_azure_iot_hub_client_telemetry_message_delete(packet_ptr);
+  }
 
   return(status);
 }

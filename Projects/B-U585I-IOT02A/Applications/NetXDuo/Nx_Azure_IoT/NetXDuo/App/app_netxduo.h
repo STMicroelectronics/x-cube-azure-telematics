@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    app_netxduo.h
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   NetXDuo applicative header file
   ******************************************************************************
   * @attention
@@ -22,18 +22,19 @@
 #define __APP_NETXDUO_H__
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "nx_api.h"
+
+/* Private includes ----------------------------------------------------------*/
 
 /* USER CODE BEGIN Includes */
 #include "main.h"
 #include "nxd_dhcp_client.h"
 #include "nxd_mqtt_client.h" 
 #include "nxd_dns.h"  
-#include "nx_driver_emw3080.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -44,7 +45,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
   
-  /* Threads configuration */  
+/* Threads configuration */  
 #define PAYLOAD_SIZE                1544
 #define NX_PACKET_POOL_SIZE         (( PAYLOAD_SIZE + sizeof(NX_PACKET)) * 30)  
 #define DEFAULT_MEMORY_SIZE         1024

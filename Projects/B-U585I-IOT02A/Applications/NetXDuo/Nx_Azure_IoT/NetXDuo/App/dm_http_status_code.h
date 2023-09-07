@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    dm_http_status_code.h
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   Device Manager HTTP status code header file
   ******************************************************************************
   * @attention

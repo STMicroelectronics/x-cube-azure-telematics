@@ -48,3 +48,6 @@
 	path = Drivers/CMSIS/Core
 	url = https://github.com/STMicroelectronics/cmsis_core.git
 
+[submodule "Middlewares/ST/netxduo_drivers/cellular"]
+	path = Middlewares/ST/netxduo_drivers/cellular
+	url = https://github.com/STMicroelectronics/stm32-cellular-netxduo-driver.git

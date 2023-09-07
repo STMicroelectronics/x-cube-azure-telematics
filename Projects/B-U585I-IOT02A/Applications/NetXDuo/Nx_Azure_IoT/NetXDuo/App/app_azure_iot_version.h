@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    app_azure_iot_version.h
-  * @author  MCD Application Team
+  * @author  GPM Application Team
   * @brief   Firmware version definition.
   ******************************************************************************
   * @attention
@@ -22,12 +22,12 @@
 #ifndef app_azure_iot_version_H
 #define app_azure_iot_version_H
 
-#define FW_VERSION_MAJOR 1
-#define FW_VERSION_MINOR 0
+#define FW_VERSION_MAJOR 2
+#define FW_VERSION_MINOR 3
 #define FW_VERSION_PATCH 0
-#define FW_VERSION_DATE "04-July-2022  4:02:07 PM"
+#define FW_VERSION_DATE "14-April-2023 03:00:00 PM"
 
-#define FW_VERSION_NAME "X-CUBE-AZURE-TELEMATICS"
+#define FW_VERSION_NAME   "X-CUBE-AZURE"
 
 #define APP_VERSION_NAME  "Nx_Azure_IoT"
 
