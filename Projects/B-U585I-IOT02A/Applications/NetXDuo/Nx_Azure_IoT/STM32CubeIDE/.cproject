@@ -101,7 +101,7 @@
 									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Cellular/Interface/Cellular_Ctrl/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Cellular/Interface/Com/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Cellular/Misc/Cmd/Inc"/>
-									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/netxduo/common/drivers/cellular"/>
+									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/netxduo_drivers/cellular"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/mx_wifi"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/netxduo_drivers/wifi/mxchip"/>
 								</option>
